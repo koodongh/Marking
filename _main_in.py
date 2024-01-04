@@ -484,11 +484,12 @@ def demo():
 
     #setUserOutputValue0(camera,True)
     while True:
-        input("Press Enter to capture and save an image, or type 'q' to quit: ")  # 사용자 입력 대기
-        isGrab =  True
-        # 종료 조건 확인
-        if input("Press 'q' to quit, or Enter to continue: ").lower() == 'q':
-            break        
+        R_ = input("Press Enter to capture and save an image, or type 'q' to quit: ")  # 사용자 입력 대기
+        if R_.lower() == 'q':
+            break
+        else:
+            isGrab =  True
+
         while isGrab :
     
             frame = pointer(GENICAM_Frame())
@@ -537,14 +538,17 @@ def demo():
                 colorByteArray = bytearray(rgbBuff)
                 cvImage = numpy.array(colorByteArray).reshape(imageParams.height, imageParams.width, 3)
            # --- end if ---
+            #초기파일생성
             r_ = '/home/user/_SEND'
             if os.path.exists(r_):
                 pass
             else:   
-                os.mkdir(r_)        
+                os.mkdir(r_) 
+            # 파일명입력
             t = '/home/user/_SEND/'
             t_ = t + str(datetime.datetime.now()) +'.jpg'
-            cv2.imwrite(t_,cvImage)    
+            cv2.imwrite(t_,cvImage)
+            print(f'이미지저장 : {t_}')
             #T = False
                 #cv2.imshow('myWindow', cvImage)
             time.sleep(1)
@@ -676,5 +680,6 @@ if __name__=="__main__":
         print("Some Error happend")
     print("--------- Demo end ---------")
     # 3s exit
-    time.sleep(5)
-    restart()
+    exit()
+    time.sleep(3)
+    #restart()
