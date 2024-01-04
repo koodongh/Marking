@@ -22,10 +22,6 @@ g_cameraStatusUserInfo = b"statusInfo"
 global T
 T = False
 
-global m_n
-m_n = 'M2901'
-
-
 def restart():
     print('Restart!')
     os.execl(sys.executable, sys.executable, *sys.argv)
@@ -490,6 +486,9 @@ def demo():
     while True:
         input("Press Enter to capture and save an image, or type 'q' to quit: ")  # 사용자 입력 대기
         isGrab =  True
+        # 종료 조건 확인
+        if input("Press 'q' to quit, or Enter to continue: ").lower() == 'q':
+            break        
         while isGrab :
     
             frame = pointer(GENICAM_Frame())
@@ -550,19 +549,9 @@ def demo():
                 #cv2.imshow('myWindow', cvImage)
             time.sleep(1)
             gc.collect()
-        #os.system('sudo echo 3 > /proc/sys/vm/drop_caches')
-           # time.sleep(5)
-        #else:
-        #    pass
+            isGrab = False
+            break
 
-        #if (cv2.waitKey(1) >= 0):
-        #    isGrab = False
-        #    break
-    # --- end while ---
-
-    #cv2.destroyAllWindows()
-
-    # 停止拉流
     nRet = streamSource.contents.stopGrabbing(streamSource)
     if ( nRet != 0 ):
         print("stopGrabbing fail!")
