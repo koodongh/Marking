@@ -428,7 +428,6 @@ def setUserOutputValue0(camera, onOff):
 
 def demo():    
     # 发现相机
-    global m_n
     cameraCnt, cameraList = enumCameras()
     if cameraCnt is None:
         return -1
@@ -464,6 +463,7 @@ def demo():
     
 
     # 设置软触发
+    '''
     nRet = setLineTriggerConf(camera)
     if ( nRet != 0 ):
         print("set LineTriggerConf fail!")
@@ -472,7 +472,7 @@ def demo():
         return -1
     else:
         print("set LineTriggerConf success!")
-
+    '''
     # 开始拉流
 
 
@@ -487,56 +487,12 @@ def demo():
         return -1
 
     isGrab = True
-    setUserOutputValue0(camera,True)
+    #setUserOutputValue0(camera,True)
     
     while isGrab :
-        # 软触发取一张图
-       # nRet = grabOne(camera)  
-       # if( nRet != 0 ):
-       #     print("grabOne fail!")
-            # 释放相关资源
-       #     streamSource.contents.release(streamSource)   
-       #     return -1      
-       # else:
-            #T = True
-       #     print("trigger time: " + str(datetime.datetime.now()))
-        
-        cnt =0
-        r = '/home/user/IG_/log.txt'
-        while True:
-        
-            if os.path.exists(r):
-                print('Detect IG ===')
-                setUserOutputValue0(camera,False)
-                time.sleep(1.5)
-                setUserOutputValue0(camera,True)
-                os.remove(r)
-            if cnt == 7 :
-                break
-            
-            else:
-                cnt += 1
-                print('-----',cnt)
-                time.sleep(1)
-        #if os.path.exists(r):
-        #    setUserOutputValue0(camera,True)
-        # 主动取图
+
         frame = pointer(GENICAM_Frame())
         nRet = streamSource.contents.getFrame(streamSource, byref(frame), c_uint(80000))
-
-
-        
-        if ( nRet != 0 ):
-            print("getFrame fail! Timeout:[1000]ms")
-            # 释放相关资源
-            streamSource.contents.release(streamSource)   
-            return -1 
-        else:
-            print("getFrame success BlockId = [" + str(frame.contents.getBlockId(frame)) + "], get frame time: " + str(datetime.datetime.now()))
-            if os.path.exists(r):
-                os.remove(r)
-            else:
-                pass
           
         nRet = frame.contents.valid(frame)
         if ( nRet != 0 ):
@@ -587,10 +543,8 @@ def demo():
         else:   
             os.mkdir(r_)        
         t = '/home/user/_SEND/'
-        #m_n = 'M1907'
-        t1 = t + m_n +'.jpg'
-        img_c = cv2.resize(cvImage,(2048,2048),interpolation=cv2.INTER_LANCZOS4) 
-        cv2.imwrite(t1,img_c)    
+        t_ = t + str(datetime.datetime.now()) +'.jpg'
+        cv2.imwrite(t_,cvImage)    
         #T = False
             #cv2.imshow('myWindow', cvImage)
         time.sleep(1)
