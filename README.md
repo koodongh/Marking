@@ -1,6 +1,6 @@
 # Marking
 
-# main.py : 테스트코드(입력)
+# main_in.py : 테스트코드(입력)
 
 
 Viewer 다운로드 링크
